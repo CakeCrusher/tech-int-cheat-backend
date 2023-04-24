@@ -18,23 +18,28 @@ openai.api_key = API_KEY
 def example():
     if request.method == 'POST':
         # Retrieve the data from the request body
-        chatSlice = request.get_json()
-        # transform the chatSlice roles to upper case and then from "YOU"  to "user" and any other role to "assistant"
-        for i in range(len(chatSlice)):
-            chatSlice[i]['role'] = chatSlice[i]['role'].upper()
-            if chatSlice[i]['role'] == "YOU":
-                chatSlice[i]['role'] = "user"
-            else:
-                chatSlice[i]['role'] = "assistant"
+        # create a try catch below
+        try:
+            chatSlice = request.get_json()
+            # transform the chatSlice roles to upper case and then from "YOU"  to "user" and any other role to "assistant"
+            for i in range(len(chatSlice)):
+                chatSlice[i]['role'] = chatSlice[i]['role'].upper()
+                if chatSlice[i]['role'] == "YOU":
+                    chatSlice[i]['role'] = "user"
+                else:
+                    chatSlice[i]['role'] = "assistant"
 
-        res = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            messages=chatSlice
-        )
-        generatedText = res.choices[0].message.content
+            res = openai.ChatCompletion.create(
+                model="gpt-3.5-turbo",
+                messages=chatSlice
+            )
+            generatedText = res.choices[0].message.content
 
-        # Return a JSON response
-        return jsonify({'response': generatedText})
+            # Return a JSON response
+            return jsonify({'response': generatedText})
+        except:
+            # return 401
+            return jsonify({'error': 'Invalid input'}), 401
 
 if __name__ == '__main__':
     app.run(debug=True)
