@@ -43,4 +43,4 @@ def example():
             return jsonify({'error': 'Invalid input'}), 401
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=PORT)
+    app.run(port=PORT, host='0.0.0.0')
