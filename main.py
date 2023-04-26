@@ -7,6 +7,7 @@ from flask_cors import CORS
 
 load_dotenv()
 API_KEY = os.getenv('API_KEY')
+PORT = os.getenv('PORT')
 
 app = Flask(__name__)
 CORS(app)
@@ -42,4 +43,4 @@ def example():
             return jsonify({'error': 'Invalid input'}), 401
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(port=PORT, debug=True)
